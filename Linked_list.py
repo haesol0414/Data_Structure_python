@@ -10,7 +10,7 @@ class Node:
 
 
 
-''' -> 링크드 리스트 클래스 구현으 대체
+''' -> 링크드 리스트 클래스 구현으로 대체
 # 데이터 2,3,5,7,11을 담는 노드 만들기
 # 노드 클래스를 이용하여 데이터 삽입 = 노드 인스턴스 생성
 # 가장 첫 노드는 헤드노드, 끝 노드는 테일노드라고 부른다.
@@ -141,7 +141,7 @@ class LinkedList:
         
 
 
-    # 노드 삽입 메소드1 (1. 링크드 리스트의 가장 뒤로 2. 어떠한 두 노드 사이에)
+    # 노드 삽입 메소드1 (1. 링크드 리스트의 가장 뒤로 삽입 2. 어떠한 두 노드 사이에 삽입)
     def insert_after(self, previous_node, data):
     	New_node = Node(data)				# 새로운 데이터를 저장할 New 노드 생성, 이 노드를 삽입한다
 
@@ -155,7 +155,7 @@ class LinkedList:
 
 
  
-    # 노드 삽입 메소드2 (3. 링크드 리스트의 가장 앞으로)
+    # 노드 삽입 메소드2 (3. 링크드 리스트의 가장 앞으로 삽입)
     def prepend(self, data):				# 추가할 data를 파라미터로 받는다
     	New_node = Node(data)				# 파라미터로 받은 data를 Node 클래스를 통해 구현한 뒤 New_node에 넣는다 (새로운 노드 인스턴스 생성)
 
@@ -167,11 +167,36 @@ class LinkedList:
     		self.head = New_node
 
 
+#210826
+
+
+    # 노드 삭제 메소드 (1. 링크드 리스트의 테일 노드 삭제 2. 어떠한 두 노드 사이에 있는 노드 삭제)
+    def delete_after(self, previous_node):
+    	deleted_data = previous_node.next.data      # 메소드 끝에서 리턴해줄 삭제 데이터
+
+
+    	if previous_node.next is self.tail: 	 	# 지우려는 노드(파라미터로 받은 previous_node의 다음 노드)가 tail 노드일 때
+    		previous_node.next = None			 	# 노드를 삭제할 때는 우선 연결관계를 끊어주면 된다. previous_node의 next속성에 아무것도 담기지 않도록 만든다 
+    		self.tail = previous_node				# 그 후 previous_node를 tail 노드로 만들어준다.
+		else:										# 어떠한 두 노드 사이의 노드를 지울 때
+			previous_node.next = previous_node.next.next	# previous_ndoe의 next 속성이 담고있는 것을 삭제할 데이터의 다음, 즉 previous_node의 *다다음 노드*로 설정해준다.
+
+
+		return deleted_data	 # 링크드 리스트에서 노드를 삭제할 때는 지워주는 노드의 data를 리턴해주는 것이 관습이다
 
 
 
-
-
+	# 노드 삭제 메소드2 (3. 링크드 리스트의 헤드 노드 삭제)    
+	def pop_left(self):
+    	deleted_head_data = self.head  # 삭제된 헤드 노드를 리턴해주기 위해 삭제 되기 전 미리 헤드노드를 임의 변수에 담아놓는 코드
+    	
+    	if self.head is self.tail:     # 링크드 리스트에 노드가 하나만 남아있는 경우
+    		self.head = None           # 더 이상 링크드 리스트에서 지우려는 노드를 가리키는 노드는 없다.
+    		self.tail = None           # 링크드 리스트의 처음이자 마지막 데이터를 삭제
+    	else:						   # 두 개 이상의 노드 링크드 리스트 중 헤드 노드만 삭제할 경우
+    		self.head = self.head.next # 헤드 노드의 next 속성 값을 헤드 노드로 설정한다
+    		
+    	return deleted_head_data		# 삭제된 맨 처음 헤드노드의 데이터 리턴
 
 
 
