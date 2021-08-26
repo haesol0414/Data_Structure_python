@@ -100,7 +100,7 @@ class LinkedList:
 
 
 
-
+    # 링크드 리스트의 접근 연산 메소드
     # 인덱스 번호를 이용해서 원하는 인덱스 번호에 있는 값을 알아내는 메소드. 해당 인덱스 번호의 데이터를 리턴한다
 	def find_node_at(self, index): # 파라미터로 원하는 노드의 위치를 나타내는 인덱스를 받는다 (파라미터 인덱스는 항상 있다고 가정)
 		i = self.head			   # 원하는 인덱스 번호까지 순차적으로 접근하기 위해 처음 iterator를 헤드노드로 설정 
@@ -112,12 +112,11 @@ class LinkedList:
 
 
 
-
-	# 출력을 통해 결과 확인하기
+	# 출력을 통해 접근 결과 확인하기
 	print(myList_1.find_node_at(3).data)       # 3번 인덱스 노드에 접근하여 그 위치의 데이터(.data) 출력
-	myList_1.find_node_at(4).data = 13			# 4번 인덱스 노드에 접근하여 그 위치의 데이터(.data) 변경
-	print(myList_1)							# myList_1의 데이터 모두 출력
-		
+	myList_1.find_node_at(4).data = 13		   # 4번 인덱스 노드에 접근하여 그 위치의 데이터(.data) 변경
+	print(myList_1)							   # myList_1의 데이터 모두 출력
+
 
 
 	# *링크드 리스트 접근 연산의 시간 복잡도*
@@ -167,7 +166,7 @@ class LinkedList:
     		self.head = New_node
 
 
-#210826
+# 210826
 
 
     # 노드 삭제 메소드 (1. 링크드 리스트의 테일 노드 삭제 2. 어떠한 두 노드 사이에 있는 노드 삭제)
@@ -240,6 +239,115 @@ class LinkedList:
    # O(n+1) = O(n)의 시간 복잡도를 갖는다.
 
 
+
+
+
+
+# 210827
+# 더블리 링크드 리스트 (Doubly Linked List)
+# 더블리 링크드 리스트는 다음 노드에 대한 레퍼런스 뿐만 아니라, 이잔 노드에 대한 레퍼런스 까지 포함하는
+# 양방향 연결 리스트이다
+
+
+class Node:
+	"""더블리 링크드 리스트의 노드 클래스"""
+	def __init__(self, data):
+		self.data = data # 노드가 저장하는 데이터
+		self.next = None # 다음 노드에 대한 레퍼런스
+		self.prev = None # 전 노드에 대한 레퍼런스
+
+
+
+class Doubly_LInkedList:
+
+	def __init__(self): 		# 인스턴스 변수(첫 노드와 끝 노드)들의 기본 값 설정
+		self.head = None    	# 이닛 메소드는 싱글리 리스트와 동일
+		self.tail = None
+
+
+	# 더블리 링크드 리스트의 __str__/접근/탐색 메소드는 싱글리 링크드 리스트와 동일하다
+
+	# 더블리 링크드 리스트 클래스의 __str__ 메소드
+	# 링크드 리스트를 출력할 때 
+	# 자동으로 링크드 리스트의 내용을 사람들이 이해할 수 있는 문자열로 리턴해주는 메소드
+    def __str__(self):
+        """링크드 리스트를 문자열로 표현해서 리턴하는 메소드"""
+        res_str = "|" 	# 처음 출력 문자열 (구분선)
+        i = self.head 	# 링크드  리스트 안에 모든 노드를 돌기 위한 변수. 일단 헤드노드로 정의한다.
+        
+        while i is not None:
+            res_str += f" {i.data} |"		 # 각 노드의 데이터를(현재 i에 담겨있는 데이터를) 리턴하는 문자열에 더해준다
+            i = i.next  					 # 다음 노드로 넘어간다
+
+        return res_str						 # 리턴하는 문자열
+
+
+
+    # 더블리 링크드 리스트의 접근 연산 메소드
+    # 인덱스 번호를 이용해서 원하는 인덱스 번호에 있는 값을 알아내는 메소드. 해당 인덱스 번호의 데이터를 리턴한다
+	def find_node_at(self, index): # 파라미터로 원하는 노드의 위치를 나타내는 인덱스를 받는다 (파라미터 인덱스는 항상 있다고 가정)
+		i = self.head			   # 원하는 인덱스 번호까지 순차적으로 접근하기 위해 처음 iterator를 헤드노드로 설정 
+
+		for _ in range(index):	   # 원하는 인덱스 번호까지 순차접근
+			i = i.next
+
+		return i
+
+
+
+	# 더블리 리스트의 탐색 연산 메소드 (단, 원하는 데이터가 담긴 노드가 없으면 None을 리턴한다.)
+	def find_node_data(self, data):		# 찾고자 하는 데이터를 data 파라미터로 받는다		
+		i = self.head 					# 링크드 리스트를 돌기 위해 필요한 노드 변수
+        
+        while i is not None:
+            if i.data == data:			# 만약 i노드의 데이터속성에 찾는 데이터(파라미터로 받은)가 맞다면 i를 리턴한다
+                return i
+            i = i.next
+        return None						# 끝까지 돌았을 때도 원하는 데이터가 없을 경우, None을 리턴한다.
+        
+
+
+    # 더블리 링크드 리스트의 추가 연산 메소드
+    def append(self, data):
+    	New_node = Node(data)      # 추가할 새로운 데이터를 저장하는 노드
+
+    	if self.head is None:		# 링크드 리스트가 비어 있는 경우
+    		self.head = New_node	# 새로운 노드를 처음이자 마지막 노드로 설정
+    		self.tail = New_ndoe
+    	else:						  # 링크드 리스트가 비어있지 않은 경우
+    		self.tail.next = New_node # 기존 tail노드의 next속성에 새로운 노드를 담는다
+    		New_node.prev = self.tail # 새로운 노드의 이전 노드를 기존의 tail노드로 연결
+    		self.tail = New_node 	  # tail노드를 새로운 노드로 설정
+
+
+
+   # 더블리 링크드 리스트의 삽입 연산 메소드1  (1. 더블리 링크드 리스트의 가장 뒤로 삽입 2. 어떠한 두 노드 사이에 삽입)
+   def insert_after(self, previous_node, data):
+   	    New_node = Node(data)
+        
+        if previous_node is self.tail:			# 새로운 노드를 tail노드로 삽입할 경우
+            self.tail.next = New_node
+            New_node.prev = self.tail			# 새로운 노드의 prev속성에 기존 tail노드를 담는다
+            self.tail = New_node
+        else:									# 어떠한 두 노드 사이에 삽입 할 경우
+            New_node.prev = previous_node       
+            New_node.next = previous_node.next  # 새롭게 생성한 노드를 이미 있는 링크드 리스트에 연결시키고
+            previous_node.next.prev = New_node
+            previous_node.next = New_node       # 이미 있는 노드들의 앞과 다음 레퍼런스를 새롭게 생성한 노드로 지정한다
+        
+        
+
+    # 더블리 링크드 리스트의 삽입 연산 메소드2 (3. 더블리 링크드 리스트의 가장 앞으로 삽입)
+    def  prepend(self, data):
+    	New_Node = Node(data)
+
+        if self.head is None:		# 더블리 링크드 리스트가 비어있는 경우
+            self.head = New_node
+            self.tail = New_node
+        else:						# 더블리 링크드 리스트가 비어있지 않은 경우		
+            New_node.next = self.head   # 새로운 노드의 다음 노드로 기존 head노드 설정
+            self.head.prev = New_node	# 기존 head노드의 prev속성을 새로운 노드로 설정
+            self.head = New_node		# head노드를 새로운 노드로 설정
 
 
 
