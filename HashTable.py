@@ -40,9 +40,9 @@
             if i.key == key:
                 return i
 
-            i = iterator.next
+            i = i.next
 
-        return None
+        return None     # 찾고 있는 키가 없을 경우 None 리턴
 
 
     # 추가 메소드 (tail 노드로)
@@ -137,54 +137,64 @@
 
     # Chaning을 쓰는 해시테이블 구현
     from HDLL import LinkedList  # 해시 테이블에서 사용할 링크드 리스트 임포트
+
     class HashTable:             # 해시 테이블 클래스
 
+
         def __init__(self, capacity):
-            self._capacity = capacity  # 파이썬 리스트 수용 크기 저장
-            self._table = [LinkedList() for _ in range(self._capacity)]  # 파이썬 리스트 인덱스에 반 링크드 리스트 저장
+            
+            self._capacity = capacity                                    # 파이썬 리스트 수용 크기 저장
+            self._table = [LinkedList() for _ in range(self._capacity)]  # 파이썬 리스트 인덱스에 빈 링크드 리스트 저장
 
 
 
-        def _hash_function(self, key):       # 주어진 key에 나누기 방법을 사용해서 해시된 값을 리턴하는 메소드 (주의: key는 파이썬 불변 타입이여야 한다.)
+        def _hash_function(self, key):              # 주어진 key에 나누기 방법을 사용해서 해시된 값을 리턴하는 메소드 (주의: key는 파이썬 불변 타입이여야 한다.)
+            
             return hash(key) % self._capacity
             
             
             
-        def _get_linked_list_for_key(self, key):     # 주어진 key에 대응하는 인덱스에 저장된 링크드 리스트를 리턴하는 메소드
-            hashed_index = self._hash_function(key)
+        def _get_linked_list_for_key(self, key):    # 파라미터로 key를 받아서 그 key에 해당하는 인덱스에 있는 링크드 리스트를 리턴
+            hashed_index = self._hash_function(key) # 해시 함수에 key를 넣어서 나온 결과 값을 변수 hashed_index에 저장
 
-            return self._table[hashed_index]
+            return self._table[hashed_index]        # 내부적으로 배열로 사용하는 self._table의 hashed_index 인덱스에 있는 링크드 리스트를 리턴       
             
-            
-
-        def _look_up_node(self, key):    # 파라미터로 받은 key를 갖고 있는 노드를 리턴하는 메소드
-            linked_list = self._get_linked_list_for_key(key)
-            return linked_list.find_node_with_key(key)
             
 
+        def _look_up_node(self, key):               # 파라미터로 받은 key를 갖고 있는 링크드 리스트 노드를 리턴하는 메소드
             
-        def look_up_value(self, key):    # 주어진 key에 해당하는 데이터를 리턴하는 메소드
+            linked_list = self._get_linked_list_for_key(key) # 배열의 원하는 인덱스에 있는 링크드 리스트를 가져옴
+            
+            return linked_list.find_node_with_key(key)       # 이 링크드 리스트 안에서 원하는 key를 갖고 있는 노드를 탐색해서 리턴
+            
+
+            
+        def look_up_value(self, key):                # 주어진 key에 해당하는 데이터를 리턴하는 메소드
+            
             return self._look_up_node(key).value
+            # 찾으려는 key를 파라미터로 받은 후 _look_up_node 메소드를 이용해서 원하는 key에 해당하는 노드를 찾고
+            # 이 노드의 value 변수를 리턴
+
             
             
+        def insert(self, key, value):                # 새로운 key - value 쌍을 삽입시켜주는 메소드 (이미 해당 key에 저장된 데이터가 있으면 해당 key에 해당하는 데이터를 바꿔준다)
             
-        def insert(self, key, value):    # 새로운 key - value 쌍을 삽입시켜주는 메소드 (이미 해당 key에 저장된 데이터가 있으면 해당 key에 해당하는 데이터를 바꿔준다)
             existing_node = self._look_up_node(key)  # 이미 저장된 key인지 확인한다
 
             if existing_node is not None:
-                existing_node.value = value  # 이미 저장된 key면 데이터만 바꿔주고
-            else:
-                # 없는 key면 링크드 리스트에 새롭게 삽입시켜준다
+                existing_node.value = value          # 이미 저장된 key면 데이터만 바꿔주고
+            else:                                    
                 linked_list = self._get_linked_list_for_key(key)
-                linked_list.append(key, value)
+                linked_list.append(key, value)       # 없는 key면 링크드 리스트에 새롭게 삽입시켜준다
 
 
 
         def delete_by_key(self, key):                 # 주어진 key에 해당하는 key - value 쌍을 삭제하는 메소드
+            
             node_to_delete = self._look_up_node(key)  # 이미 저장된 key인지 확인한다
 
-            # 저장되어 있는 key면 삭제한다
-            if node_to_delete is not None:
+
+            if node_to_delete is not None:            # 저장되어 있는 key면 삭제한다
                 linked_list = self._get_linked_list_for_key(key)
                 linked_list.delete(node_to_delete)
 
@@ -206,6 +216,15 @@
     # 비어있는 다른 인덱스를 찾는다.
     # 선형 탐사(Linear probing) : 충돌이 일어났을 때, 바로 뒤 인덱스들을 한 칸씩 보며 빈 인덱스를 찾는 방법 - 빈 인덱스를 찾을 때 하나씩 순서대로, 선형적으로 찾음.
     # 제곱 탐사(Quadratic Probing) : 선형적으로 바로 다음 인덱스들을 하나씩 확인하지 않고, 제곱을 한 값들을 이용해서 인덱스를 찾음. (1의 제곱은 1이므로 한칸 뒤, 2의 제곱은 4이므로 4칸 뒤 ...)
+    # Open Addressing 탐색/삭제 연산 주의사항
+    # 탐색 하다가 빈 익덱스가 나오면 데이터가 저장되지 않았다고 인식하여, 뒤에 찾고자 하는 데이터가 저장되어 있어도 탐색을 종료해버린다.
+    # 그렇기 때문에 데이터가 삭제된 빈 자리에는 'DELETE' 등의 약속된 표시를 해주어야 한다.
+
+    
+
+
+
+
 
 
 
