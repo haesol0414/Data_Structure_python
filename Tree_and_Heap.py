@@ -243,19 +243,22 @@
 
 
 
-     # 이진 탐색 트리
-     # 딕셔너리나 세트 자료형을 구현할 때 사용할 수 있다
-     # 이진 탐색 트리는 이진 트리이면서 어떤 속성을 지켜야 한다.
-     # * 루트 노드를 기준으로 왼쪽 부분 노드들은 루트 노드의 값보다 작아야 하고
-     # * 오른쪽 부분 노드들은 루트 노드의 값보다 커야한다.
-     # 이 속성이 바로 이진 탐색 트리 속성이다.
+    # 이진 탐색 트리
+    # 딕셔너리나 세트 자료형을 구현할 때 사용할 수 있다
+    # 이진 탐색 트리는 이진 트리이면서 어떤 속성을 지켜야 한다.
+    # * 루트 노드를 기준으로 왼쪽 부분 노드들은 루트 노드의 값보다 작아야 하고
+    # * 오른쪽 부분 노드들은 루트 노드의 값보다 커야한다.
+    # 이 속성이 바로 이진 탐색 트리 속성이다.
      
 
 
-     # 이진 탐색 트리 노드와 클래스 구현
-     # 힙은 항상 완전 이진 트리이기 때문에 배열로 구현했지만,
-     # 이진 탐색 트리는 항상 완전 이진 트리라는 보장이 없다.
-     # 그러므로 이진 탐색 트리는 노드 클래스를 정의하여 인스턴스들을 생성하고 연결시켜서 구현한다.
+#210906
+
+
+    # 이진 탐색 트리 노드와 클래스 구현
+    # 힙은 항상 완전 이진 트리이기 때문에 배열로 구현했지만,
+    # 이진 탐색 트리는 항상 완전 이진 트리라는 보장이 없다.
+    # 그러므로 이진 탐색 트리는 노드 클래스를 정의하여 인스턴스들을 생성하고 연결시켜서 구현한다.
 
      class Node:			# 이진 탐색 트리 노드 클래스
      	def __init__(self, data):
@@ -312,14 +315,14 @@
 
 
 
-  		# 이진 탐색 트리의 탐색 연산 메소드
-  		# 1. 주어진 노드의 데이터와 탐색하려는 데이터 비교 (root노드에서 시작)
-  		# 2. 탐색하려는 데이터가 더 크면 노드의 오른쪽 자식으로 간다
-  		# 2-2. 탐색하려는 데이터가 더 작으면 노드의 왼쪽 자식으로 간다.
-  		# 3. 탐색하는 노드를 찾을 때 까지 위 과정을 반복하고 탐색하려는 노드를 찾으면 리턴한다
-  		# 이진 탐색 트리의 탐색 연산의 시간 복잡도
-  		# 트리의 높이인 h보다 한 단계 더 내려가게 되는 경우 최악의 경우가 되므로,
-  		# 최악의 경우 시간 복잡도는 O(h+1), 즉 O(h)가 된다.
+  	# 이진 탐색 트리의 탐색 연산 메소드
+  	# 1. 주어진 노드의 데이터와 탐색하려는 데이터 비교 (root노드에서 시작)
+  	# 2. 탐색하려는 데이터가 더 크면 노드의 오른쪽 자식으로 간다
+  	# 2-2. 탐색하려는 데이터가 더 작으면 노드의 왼쪽 자식으로 간다.
+  	# 3. 탐색하는 노드를 찾을 때 까지 위 과정을 반복하고 탐색하려는 노드를 찾으면 리턴한다
+  	# 이진 탐색 트리의 탐색 연산의 시간 복잡도
+  	# 트리의 높이인 h보다 한 단계 더 내려가게 되는 경우 최악의 경우가 되므로,
+  	# 최악의 경우 시간 복잡도는 O(h+1), 즉 O(h)가 된다.
 
 	    def search(self, data): 	# 이진 탐색 트리 탐색 메소드, 찾는 데이터를 갖는 노드가 없으면 None을 리턴한다
 	        
@@ -340,7 +343,7 @@
 
 
 	    
-	    # 이진 탐색 트리에서 가장 작은 데이터를 가진 노드를 찾아주는 find_min 메소드 - (부분)이진 탐색 트리의 가장 작은 노드 리턴
+	# 이진 탐색 트리에서 가장 작은 데이터를 가진 노드를 찾아주는 find_min 메소드 - (부분)이진 탐색 트리의 가장 작은 노드 리턴
         # 내가 쓴 메소드 ( 실행 결과 정답 )
 	    @staticmethod
 	    def find_min(node):
@@ -364,7 +367,7 @@
 	    # 찾게되면 while문 안 쪽의 if문에 걸리므로, return문을 만나 메소드가 종료된다.
 
 
-	    # 코드잇 해석 정답 메소드
+	   # 코드잇 해석 정답 메소드
 		def find_min(node):
 		    temp = node  # 도우미 변수. 파라미터 node로 초기화
 
@@ -374,6 +377,109 @@
 		    return temp 					# 왼쪽 자식 노드가 없는경우, None일 경우 temp 리턴
 		# 내 코드에 비해서 간략하다. 이렇게 해도 temp노드가 처음이자 마지막 노드일 경우에도 while문 조건을 통해
 		# 바로 걸러지기 때문에 내 코드의 if문을 적을 필요가 없이 간결하게 쓸 수 있다. 코드를 더욱 간략화해서 쓸 수있도록 고민해야겠다.
+
+
+
+#210908
+
+
+
+	# 이진 탐색 트리 삭제 메소드
+	# 삭제하려는 데이터를 갖는 노드를 먼저 찾아야 함 (탐색 메소드 이용)
+	# 이진 탐색 트리의 삭제는 네가지 경우로 나누어 볼 수 있다.
+	# 경우 1. 삭제하려는 데이터가 leaf노드의 데이터일 때
+	# : 부모노드의 자식 노드를 삭제하면 됨
+	# 경우 2. 삭제하려는 데이터 노드가 하나의 자식 노드만 있을 때
+	# : 삭제하려는 노드를 삭제하고 하나 남은 자식 노드를 삭제된 노드의 부모 노드의 자식으로 만들어 줌
+    # 삭제 메소드는 삭제하려는 노드가 root 노드인지, 삭제하려는 노드가 부모의 왼쪽 자식인지 오른쪽 자식인지, 삭제하려는 노드의 자식이 왼쪽에 있는지 오른쪽에 있는지, 
+    # 이런걸 다 생각해줘야 하는데, 어떤 경우든 “삭제하는 노드의 위치를 자식 노드가 대신 차지한다”는 원칙만 잘 기억한다면 좀 더 쉽게 문제에 접근할 수 있다.
+    # 경우3. 삭제하려는 데이터의 노드가 두 개의 자식이 있을 때
+    # 이진탐색트리에서 어떤 노드보다 큰 모든 노드 중 가장 작은 노드를 'successor' 라고 한다.
+    # 경우 3번은 삭제하려는 노드의 오른쪽 자식 노드에서 find_min 메소드를 호출하고
+    # successor를 찾아 *데이터*와 삭제하려는 노드의 *데이터*의 위치를 바꿔준 후 바뀐 sucessor 노드만 삭제하면 된다
+
+
+
+    def delete(self, data):						 # 이진 탐색 트리 삭제 메소드
+        node_to_delete = self.search(data)  	 # 탐색 메소드를 통해 삭제할 노드를 가지고 온다
+        parent_node = node_to_delete.parent  	 # 삭제할 노드의 부모 노드
+		# 경우 1. 삭제하려는 데이터가 leaf노드의 데이터일 때 ( = 자식 노드가 없는 경우 )
+       if self.root is node_to_delete:
+                self.root = None  							 # 삭제하려는 노드가 처음이자 마지막인 root노드인 경우 root노드를 None으로 설정
+            else:  							
+                if node_to_delete is parent_node.left_child: # 삭제하려는 노드가 부모 노드의 왼쪽 자식이면
+                    parent_node.left_child = None   		 # 부모의 왼쪽 자식을 None으로 바꿈
+                else:      									 # 삭제하려는 노드가 부모 노드의 오른쪽 자식이면 (왼쪽이 아니면 오른쪽이니까)
+                    parent_node.right_child = None           # None부모의 오른쪽 자식을 None으로 바꿈
+
+	    # 경우 2: 지우려는 노드가 자식이 하나인 노드일 때
+	    elif node_to_delete.left_child is None:  			
+	        if node_to_delete is self.root:	        				# 지우려는 노드가 root 노드이면서 오른쪽 자식만 가졌을 때
+	            self.root = node_to_delete.right_child 			    # root노드의 하나 뿐인 오른쪽 자식을 root노드로 설정
+	            self.root.parent = None 						    # 바뀐 root노드의 부모 노드 None으로 설정
+	        elif node_to_delete is parent_node.right_child:	        # 지우려는 노드가 부모의 오른쪽 자식일 때
+	            parent_node.left_child = node_to_delete.right_child 
+	            node_to_delete.right_child.parent = parent_node
+	        else:	        										# 지우려는 노드가 부모의 오른쪽 자식일 때
+	            parent_node.right_child = node_to_delete.right_child
+	            node_to_delete.right_child.parent = parent_node
+
+	    elif node_to_delete.right_child is None: 	
+	        if node_to_delete is self.root:				            # 지우려는 노드가 root 노드이면서 왼쪽 자식만 가졌을 때
+	            self.root = node_to_delete.left_child			    # root노드의 하나 뿐인 왼쪽 자식을 root노드로 설정
+	            self.root.parent = None					    		# 바뀐 root노드의 부모 노드 None으로 설정
+	        elif node_to_delete is parent_node.left_child:  	    # 지우려는 노드가 부모의 왼쪽 자식일 때
+	            parent_node.left_child = node_to_delete.left_child  
+	            node_to_delete.left_child.parent = parent_node
+	        else:   											    # 지우려는 노드가 부모의 오른쪽 자식일 때
+	            parent_node.right_child = node_to_delete.left_child
+	            node_to_delete.left_child.parent = parent_node
+
+ 		# 경우 3: 지우려는 노드가 2개의 자식이 있을 때
+        else:
+            successor = self.find_min(node_to_delete.right_child)  # 삭제하려는 노드의 successor 노드 받아오기 (삭제하려는 노드의 오른쪽 노드에서 fine_min)
+
+            node_to_delete.data = successor.data  # 삭제하려는 노드의 데이터에 successor의 데이터 저장
+
+            # 바뀐 successor 노드 (기존에 삭제하려던 노드)를 트리에서 삭제
+            if successor is successor.parent.left_child:    # successor 노드가 왼쪽 자식일 때
+                successor.parent.left_child = successor.right_child
+            else:  											# successor 노드가 오른쪽 자식일 때
+                successor.parent.right_child = successor.right_child        
+        
+            if successor.right_child is not None:  			# successor 노드가 오른쪽 자식이 있을 떄
+                successor.right_child.parent = successor.parent
+
+
+
+
+    # 이진 탐색 트리 삭제 연산의 시간 복잡도
+    # 일단 삭제 연산은 공통적으로 삭제하려는 데이터를 갖는 노드를 탐색해야 한다.
+    # 이진 탐색 트리의 높이를 h라고 했을 때, 탐색 연산은 O(h)의 시간 복잡도가 걸림. 그러므로 삭제 연산이 O(1)의 시간 복잡도를 갖더라도
+    # 결국엔 모두 O(h)의 시간 복잡도를 가진다고 볼 수 있다. 경우 1,2는 삭제 연산에서 O(1)이지만 경우 3은 삭제 연산에서도 O(h)의 시간 복잡도를 갖는다.
+    # 경우 1 : 부모에서 자식 레퍼런스를 None으로 지정해주면 되므로 걸리는 시간이 노드 개수나 트리 높이에 비례하지 않아 O(1)이 걸린다.
+    # 경우 2 : 삭제하려는 노드의 부모의 자식을 삭제하려는 노드의 자식으로 만들어 줌. 어떤 노드인지와 상관없이 그냥 레퍼런스 2개만 연결시켜주면 되므로 이 경우도 O(1)이 걸림.
+    # 경우 3 : 경우 3은 여러가지의 단계로 나뉘어져 있었다.
+    # 3-1단계 : 먼저 지우려는 데이터 노드의 successor 노드를 찾는다. successor 노드는 삭제하려는 노드의 오른쪽 자식을 find_min 메소드의 파라미터로 넘겨서 구함.
+    # / find_min 메소드는 총 O(h)이 걸림. 그러므로 3-1단계는 O(h)
+    # 3-2단계 : 지우려는 노드에 successor 노드의 데이터를 저장 / 단순히 노드에 데이터를 넣는 단계라서 O(h)
+    # 3-3단계 : successor 노드를 지운다 / successor가 오른쪽 자식 노드가 있으면 O(2), 없으면 O(1)이 걸리기 때문에 결국 O(1)이 걸린다.
+    # 합쳐 보면 총 O(h + h + 1)이 걸리므로 경우 3은 탐색을 제외하고 O(h)이 걸리는 것.
+
+
+	# 이진 탐색 트리 연산 총 시간 복잡도
+	# 삽입 :	O(h) / 평균 O(lg(n)) / 최악 O(n)
+	# 탐색 :	O(h) / 평균 O(lg(n)) / 최악 O(n)
+	# 삭제 ;	O(h) / 평균 O(lg(n)) / 최악 O(n)
+
+
+	# 이진 탐색 트리 평가 
+	# 추상 자료형, 세트나 딕셔너리를 코드로 구현할 때, 일반적인 경우에는 해시 테이블을 사용하는 게 이진 탐색 트리를 사용하는 것보다 더 효율적.
+	# 하지만 세트의 데이터나 딕셔너리의 key를 '정렬된 상태'로 사용하고 싶을 때는 이진 탐색 트리를 사용하는 것이 좋다.
+	# 이진 탐색 트리의 기본 연산들은 트리가 편향돼 있을수록 비효율적이고, 균형이 잡혀 있을수록 효율적이다.
+	# 트리의 높이가 작을수록, 그러니까 그 높이가 lg(n)에 가까울수록 '트리가 균형이 잡혔다' 라고 할 수 있다.
+
+	
 
 
 
