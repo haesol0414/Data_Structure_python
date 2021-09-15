@@ -38,6 +38,8 @@
 
 #210914
 
+
+
 	# 지하철 역 노드
 	class StationNode:
 		def __init__(self, name, num_exits):
@@ -82,6 +84,111 @@
     # 방향 그래프에서 엣지가 떠나는 노드의 인접 리스트에만 엣지가 들어가는 노드를 저장해준다.
     # 여러개의 노드가 있고 하나의 노드는 각자 자신이 인접한 노드들에 대한 레퍼런스를 저장하고 있는 것이다.
     
+
+
+#210915
+
+
+
+	# 그래프 탐색(= 순회)
+	# : 하나의 시작점 노드에서 연결된 노드들을 모두 찾는 것
+	# 그래프 탐색 알고리즘은 각 노드들을 어떤 순서로 탐색하는지에 따라 두 종류로 나뉜다.
+	# 1. Breadth First Search (BFS) / 2. Depth First Search (DFS)
+
+
+	# Breadth First Search (BFS)
+	# Breadth 너비 First 우선 Search 탐색
+	# 너비를 우선적으로, 즉 수평적으로 탐색함 (--> 방향) 
+
+
+	# BFS 알고리즘
+	# 큐는 BFS 알고리즘에서 굉장히 중요한 역할을 함. ( 큐 = FIFO )
+	# 단계 ::
+	# 시작 노드를 방문 표시 후, 큐에 넣음
+	# 큐에 아무 노드가 없을 때 까지 :
+	# 			큐 가장 앞 노드를 꺼낸다
+	#			꺼낸 노드에 인접한 노드들을 모두 보면서 :
+	#								처음 방문한 노드면 :
+	#										방문한 노드 표시를 해준다
+	#										큐에 넣어준다
+	# 노드들을 모두 방문했고, 큐에 아무 노드가 없을 때 까지 이 과정을 반복한다.
+
+
+	# BFS로 연결된 역 찾기 (연결 되었다면 True, 연결되지 않았다면 False를 출력함)
+	# 지하철 역을 나타내는 클래스
+	class StationNode:
+    def __init__(self, station_name):
+        self.station_name = station_name			# 역 이름
+        self.adjacent_stations = []					# 인접한 역
+        self.visited = False						# 노드 방문 여부
+
+    def add_connection(self, station): 			    # 파라미터로 받은 역과 엣지를 만들어주는 메소드
+        self.adjacent_stations.append(station)
+        station.adjacent_stations.append(self)
+
+
+	# 시작 노드에서 BFS를 실행하는 함수
+	def bfs(graph, start_node):
+    queue = deque()  # 빈 큐 생성
+
+    for station_node in graph.values(): 	# 모든 노드를 방문하지 않은 노드로 표시
+        station_node.visited = False
+
+    start_node.visited = True   		# 시작점 노드를 방문 표시한 후 큐에 넣어준다
+    queue.append(start_node)
+    
+    while queue:  										 	 # 큐에 노드가 있는 동안
+        current_station = queue.popleft() 					 # 큐의 가장 앞 데이터를 갖고 온다
+        for neighbor in current_station.adjacent_stations:   # 인접한 노드를 돌면서
+            if not neighbor.visited:  						 # 방문하지 않은 노드면
+                neighbor.visited = True  					 # 방문 표시를 하고
+                queue.append(neighbor) 						 # 큐에 넣는다
+	# 노드들을 모두 방문했고, 큐에 아무 노드가 없을 때 까지 이 과정을 반복.
+
+
+
+    # ** popleft() 메소드는 가장 앞에서부터 데이터를 삭제 및 추출하고 (큐에 적합),
+    # pop() 메소드는 가장 뒤에서부터 데이터를 삭제 및 추출한다 (스택에 적합).
+
+
+
+	# Depth First Search (DFS)
+	# Depth 깊이 First 우선 Search 탐색
+	# 깊이를 우선적으로 탐색함 ( 시작 노드에서부터 아래로 )
+
+
+	# DFS 알고리즘
+	# DFS 알고리즘에선 스택이 중요한 역할을 함. ( 스택 = LIFO )
+	# 시작 노드와 인접한 노드들을 스택에 넣고, 마지막으로 삽입된 노드부터 순서대로 꺼내서 깊이 우선으로 처리함.
+	# 단계 ::
+	# 시작 노드를 방문 표시 후, 스택에 넣음.
+	# 스택에 아무 노드가 없을 때 까지 :
+	# 			스택의 가장 위 노드를 꺼낸다
+	#			노드를 방문 처리 한다
+	#					인접한 노드들을 모두 보면서 : 
+	#							처음 방문하거나 스택에 없는 노드면 :
+	#											 		스택에 넣어준다
+	# 노드들을 모두 방문했고, 스택에 아무 노드가 없을 때 까지 이 과정을 반복한다.
+
+
+	# DFS로 연결된 역 찾기 ( visited 가 0이면 연결되지 않은 노드, 1이면 스택에 들어가 있는 노드, 2면 연결된 노드 )
+	def dfs(graph, start_node):
+	    stack = deque()  # 빈 스택 생성
+
+	    for station_node in graph.values():  		# 모든 노드를 처음 보는 노드로 초기화
+	        station_node.visited = 0
+
+	    start_node.visited = 1  				# 시작 노드를 스택에 넣는다는 표시(옅은 회색)를 하고
+	    stack.append(start_node)  				# 스택에 넣음
+
+	    while stack: 							 # 스택에 노드가 남아 있을 때까지
+	        current_node = stack.pop()  		 # 스택 가장 위(뒤) 데이터를 갖고 온다
+	        current_node.visited = 2  			 # 현재 노드를 방문 표시한다
+	        for neighbor in current_node.adjacent_stations:		# 인접한 노드들을 모두 보면서
+	            if neighbor.visited == 0:  		# 처음 보는 노드들만
+	                neighbor.visited = 1  		# 스택에 넣는다는 표시를 하고
+	                stack.append(neighbor)  	# 스택에 넣음
+	# 노드들을 모두 방문했고, 스택에 아무 노드가 없을 때 까지 이 과정을 반복.
 
 
 
