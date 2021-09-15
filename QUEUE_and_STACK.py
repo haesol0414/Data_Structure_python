@@ -108,7 +108,7 @@
 
     # 파이썬에서 스택을 사용할 때도 deque를 사용한다.
     from collections import deque
-    stack = deque().    # 사용할 스택 정의
+    stack = deque()    # 사용할 스택 정의
 
     stack.append("일")  # 맨 뒤 데이터 추가
     print(stack[-1])   # 맨 뒤 데이터 접근
