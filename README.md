@@ -122,3 +122,14 @@
 - Depth First Search (DFS)
 - DFS 알고리즘
 - DFS로 연결된 역 찾기
+
+
+#210916
+- 최단경로 알고리즘이란
+- 최단경로용 BFS와 predecessor 변수
+- 최단 경로용 BFS 함수
+- Dijkstra 알고리즘과 엣지 Relaxation
+
+
+
+

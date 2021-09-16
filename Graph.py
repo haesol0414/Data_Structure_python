@@ -193,16 +193,89 @@
 
 
 
+#210916
 
 
 
+	# 최단경로 알고리즘
+	# 최단경로 : 경로에 있는 모든 엣지의 수는 '거리' 라고 한다. 거리가 가장 적은 경로가 최단경로이다.
+	# 즉, 두 노드 사이 경로 중 거리가 가장 짧은 경로가 최단경로이다.
+	# 그래프도 방향, 무방향, 가중치, 비가중치, 음수 엣지 유무, 싸이클 유무에 따라 최단경로가 다르다.
+	# 최단경로 알고리즘은 그래프의 특성에 따라 다를 수 있다.
+	# 비 가중치 그래프에서 사용할 수 있는 최단경로 알고리즘은 BFS, 가중치 그래프에서는 Dijkstra 알고리즘을 사용할 수 있다.
 
 
+	# 그래프를 탐색할 때 사용한 BFS 알고리즘을 조금만 수정해주면 최단경로 알고리즘으로 사용할 수 있다.
+	# 탐색 BFS 알고리즘에서는 노드 방문 여부를 visited 변수에 저장했었다.
+	# 최단경로 알고리즘에서는 여기에 predecessor 변수를 추가로 저장한다. (predecessor : ~이전의 것)
+	# predecessor 변수는 현재 방문중인 노드가 어떤 노드를 통해 왔는지를 저장한다. (시작 노드의 predecessor는 None이다)
+	# 큐를 통한 BFS 알고리즘으로 노드 방문 여부와 그 노드가 어떤 노드를 통해 왔는지를 모두 저장하고 나면,
+	# 최단 경로를 알고싶은 두 노드가 있을 때, 도착 노드에서부터 시작 노드까지 predecessor를 찾아간다.
+	# 이 경로가 최단경로가 된다. 도착점부터 시작점까지 Backtracking하는 것.
 
 
+	# 최단경로용 BFS - 비가중치 그래프의 최단경로
+	# 단계 ::
+	# 시작 노드를 방문 표시 후, 큐에 넣음
+	# 큐에 아무 노드가 없을 때 까지 :
+	# 			큐 가장 앞 노드를 꺼낸다
+	#			꺼낸 노드에 인접한 노드들을 모두 보면서 :
+	#								처음 방문한 노드면 :
+	#										방문한 노드 표시를 해준다
+	# 										predecessor 변수를 큐에서 꺼낸 노드로 설정한다
+	#										큐에 넣어준다
+	# 노드들을 모두 방문했고, 큐에 아무 노드가 없을 때 까지 이 과정을 반복한다.
+	# Backtracking 과정
+	# 현재 노드를 경로에 추가한다
+	# 현재 노드의 predecessor로 간다
+	# predecessor가 없을 때 까지 위 단계들을 반복
 
 
+	# 최단 경로용 BFS 함수
+	def bfs(graph, start_node):
+	    queue = deque()  # 빈 큐 생성
+
+	    for station_node in graph.values():		# 모든 노드를 방문하지 않은 노드로 표시, 모든 predecessor는 None으로 초기화
+	        station_node.visited = False
+	        station_node.predecessor = None
+
+	    start_node.visited = True		 # 시작점 노드를 방문 표시한 후 큐에 넣어준다
+	    queue.append(start_node)
+	    
+	    while queue:  									# 큐에 노드가 있을 때까지
+	        current_station = queue.popleft()  			# 큐의 가장 앞 데이터를 갖고 온다
+	        for neighbor in current_station.adjacent_stations:  # 인접한 노드를 돌면서
+	            if not neighbor.visited: 			    # 방문하지 않은 노드면
+	                neighbor.visited = True  			# 방문 표시를 하고
+	                neighbor.predecessor = current_station  # 이 노드가 어디서 왔는지 표시 
+	                queue.append(neighbor)  				# 큐에 넣는다
 
 
+	def back_track(destination_node ): 	# 최단 경로를 찾기 위한 back tracking 함수
+	    res_str = ""  					# 리턴할 결과 문자열
+	    temp = destination_node  		# 도착 노드에서 시작 노드까지 찾아가는 데 사용할 변수
 
+	    while temp is not None: 		# 시작 노드까지 갈 때까지
+	        res_str = f"{temp.station_name} {res_str}"  # 결과 문자열에 역 이름을 더하고
+	        temp = temp.predecessor  	# temp를 다음 노드로 바꿔준다
+
+	    return res_str
+	    
+
+
+	# Dijkstra 알고리즘 - 가중치 그래프의 최단경로
+	# distance 변수 : 특정 노드까지의 최단 거리 예상치 ( 현재까지 아는 정보로 계산한 최단거리 )
+	# predecessor 변수 : 현재까지 찾은 최단 경로에서 바로 직전의 노드
+	# complete 변수 : 노드까지의 최단 경로를 찾았다고 표시하기 위한 변수 (boolean)
+	# 엣지 Relaxation
+	# Dijkstra 알고리즘에서 노드들을 방문하면서 해당 노드들의 distance와 predecessor를 바꾸는 것을 엣지를 Relax한다고 표현한다.
+	# 최단거리 예상 값을 줄여나가는 것이라고 이해하면 됨
+	# Dijkstra 알고리즘
+	# 단계 ::
+	# 시작점의 distance를 0으로, predecessor를 None으로 설정
+	# 모든 노드가 complete일 때 까지 :
+	# 			complete하지 않은 노드 중 distance가 가장 작은 노드 선택
+	#			이 노드에 인접한 노드 중 complete하지 않은 노드를 돌면서 :
+	#								각 엣지를 relax한다
+	#			현재 노드를 complete 처리한다
 
